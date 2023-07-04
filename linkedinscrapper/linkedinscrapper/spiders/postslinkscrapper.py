@@ -14,7 +14,7 @@ class PostslinkscrapperSpider(scrapy.Spider):
 
     def start_requests(self):
 
-        post_list = ['https://www.linkedin.com/directory/posts/y?trk=posts_directory_letter_nav']
+        post_list = ['https://www.linkedin.com/directory/posts/q?trk=posts_directory_letter_nav']
         for post in post_list:
             #linkedin_post_url = f'https://www.linkedin.com/posts/{post}/' 
             yield scrapy.Request(url=(post), callback=self.parse_post, meta={'posts': post}) 
