@@ -11,7 +11,11 @@ BOT_NAME = "linkedinscrapper"
 
 SPIDER_MODULES = ["linkedinscrapper.spiders"]
 NEWSPIDER_MODULE = "linkedinscrapper.spiders"
-
+FEEDS = {
+    'data/%(name)s/%(name)s_%(time)s.csv': {
+        'format': 'csv',
+        }
+}
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "linkedinscrapper (+http://www.yourdomain.com)"
