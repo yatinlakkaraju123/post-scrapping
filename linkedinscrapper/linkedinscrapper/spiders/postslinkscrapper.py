@@ -1,4 +1,5 @@
-import scrapy
+import scrapy,string
+
 
 
 class PostslinkscrapperSpider(scrapy.Spider):
@@ -14,10 +15,10 @@ class PostslinkscrapperSpider(scrapy.Spider):
 
     def start_requests(self):
 
-        post_list = ['https://www.linkedin.com/directory/posts/s?trk=posts_directory_letter_nav']
+        post_list = list(string.ascii_lowercase)
         for post in post_list:
-            #linkedin_post_url = f'https://www.linkedin.com/posts/{post}/' 
-            yield scrapy.Request(url=(post), callback=self.parse_post, meta={'posts': post}) 
+            linkedin_post_url = f'https://www.linkedin.com/directory/posts/{post}?trk=posts_directory_letter_nav/' 
+            yield scrapy.Request(url=(linkedin_post_url), callback=self.parse_post, meta={'posts': linkedin_post_url}) 
     def parse_post(self,response):
         item = {}
         posts = response.css('li.listings__entry')
