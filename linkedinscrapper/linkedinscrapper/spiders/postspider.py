@@ -1,5 +1,5 @@
-import scrapy
-
+import scrapy,csv
+from itertools import chain
 
 class PostspiderSpider(scrapy.Spider):
     name = "postspider"
@@ -11,9 +11,20 @@ class PostspiderSpider(scrapy.Spider):
 }
 
     def start_requests(self):
-        post_list = ['evanharvey_from-22-days-to-22-seconds-with-ai-activity-7079873808270012416-fayp?trk=posts_directory']
-        for post in post_list:
-            linkedin_post_url = f'https://www.linkedin.com/posts/{post}/' 
+        post_list = []
+        try:
+            with open("/home/vboxuser/programming/scrappy/linkedin/linkedinscrapper/data/postslinkscrapper/postslinkscrapper_2023-07-05T09-30-18.csv","r") as csvfile:
+                csv_reader = csv.reader(csvfile)
+                next(csv_reader)
+                for row in csv_reader:
+                    post_list.append(row)
+        except FileNotFoundError:
+            print("file not found")
+        except Exception as e:
+            print(e)
+        lst = list(chain.from_iterable(post_list))
+        for post in lst:
+            linkedin_post_url = post
             yield scrapy.Request(url=linkedin_post_url, callback=self.parse_post, meta={'post': post, 'linkedin_url': linkedin_post_url}) 
     def parse_post(self,response):
         item = {}

@@ -1,11 +1,11 @@
-import scrapy,string
+import scrapy
 
 
 
 class PostslinkscrapperSpider(scrapy.Spider):
     name = "postslinkscrapper"
     download_delay = 2
-    
+
     headers = {
     "accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
     "accept-encoding" : "gzip, deflate, sdch, br",
