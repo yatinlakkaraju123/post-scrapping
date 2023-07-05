@@ -1,9 +1,8 @@
-import scrapy,string
+import scrapy
 
 
-
-class PostslinkscrapperSpider(scrapy.Spider):
-    name = "postslinkscrapper"
+class Postslinkscrapper2Spider(scrapy.Spider):
+    name = "postslinkscrapper2"
     download_delay = 2
     
     headers = {
@@ -16,8 +15,8 @@ class PostslinkscrapperSpider(scrapy.Spider):
     def start_requests(self):
 
         post_list = list()
-        for i in range(0,17):
-            post_list.append(chr(ord('a')+i))
+        for i in range(0,9):
+            post_list.append(chr(ord('r')+i))
         for post in post_list:
             linkedin_post_url = f'https://www.linkedin.com/directory/posts/{post}?trk=posts_directory_letter_nav/' 
             yield scrapy.Request(url=(linkedin_post_url), callback=self.parse_post, meta={'posts': linkedin_post_url}) 
@@ -28,3 +27,4 @@ class PostslinkscrapperSpider(scrapy.Spider):
             yield{
                 'url':post.css('a.listings__entry-link').attrib['href']
             }
+
