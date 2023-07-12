@@ -13,7 +13,7 @@ class PostspiderSpider(scrapy.Spider):
     def start_requests(self):
         post_list = []
         try:
-            with open("/home/vboxuser/programming/scrappy/linkedin/linkedinscrapper/data/postslinkscrapper/postslinkscrapper_2023-07-05T09-30-18.csv","r") as csvfile:
+            with open("/home/vboxuser/programming/scrappy/linkedin/linkedinscrapper/linkedinscrapper/data/postslinkscrapper2/postslinkscrapper2_2023-07-05T06-52-27.csv","r") as csvfile:
                 csv_reader = csv.reader(csvfile)
                 next(csv_reader)
                 for row in csv_reader:
