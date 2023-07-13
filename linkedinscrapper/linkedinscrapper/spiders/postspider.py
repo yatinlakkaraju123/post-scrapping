@@ -84,5 +84,7 @@ class PostspiderSpider(scrapy.Spider):
         else:
             item['hashtag10'] = ''
         #item['hashtag6'] = post.css('div.attributed-text-segment-list__container.relative.mt-1.mb-1\.5.babybear\:mt-0.babybear\:mb-0\.5 p a:nth-child(6)::text').get().strip()
-        item['likes'] = post.css('div.flex.items-center.font-sans.text-sm.my-1.main-feed-activity-card__social-actions a span::text').get().strip()
+        if post.css('div.flex.items-center.font-sans.text-sm.my-1.main-feed-activity-card__social-actions a span::text').get() is not None:
+            item['likes'] = post.css('div.flex.items-center.font-sans.text-sm.my-1.main-feed-activity-card__social-actions a span::text').get().strip()
+        
         yield item
