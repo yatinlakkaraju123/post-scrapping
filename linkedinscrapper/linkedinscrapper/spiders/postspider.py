@@ -1,6 +1,6 @@
 import scrapy,csv
 from itertools import chain
-
+import requests
 class PostspiderSpider(scrapy.Spider):
     name = "postspider"
     headers = {
@@ -12,16 +12,19 @@ class PostspiderSpider(scrapy.Spider):
 
     def start_requests(self):
         post_list = []
+        url = "https://raw.githubusercontent.com/yatinlakkaraju123/post-scrapping/main/linkedinscrapper/linkedinscrapper/data/postslinkscrapper/postslinkscrapper_2023-07-05T09-30-18.csv"
+        
         try:
-            with open("/home/vboxuser/programming/scrappy/linkedin/linkedinscrapper/linkedinscrapper/data/postslinkscrapper2/postslinkscrapper2_2023-07-05T06-52-27.csv","r") as csvfile:
-                csv_reader = csv.reader(csvfile)
-                next(csv_reader)
-                for row in csv_reader:
-                    post_list.append(row)
-        except FileNotFoundError:
-            print("file not found")
+            response = requests.get(url)
+            if response.status_code == 200:
+                lines = response.text.splitlines()
+                csv_reader = csv.reader(lines)
+                next(csv_reader)  # Skip the header row
+                post_list = [row for row in csv_reader]
+            else:
+                print("Failed to fetch the CSV file from the URL")
         except Exception as e:
-            print(e)
+            print("An error occurred:", e)
         lst = list(chain.from_iterable(post_list))
         for post in lst:
             linkedin_post_url = post
@@ -86,5 +89,7 @@ class PostspiderSpider(scrapy.Spider):
         #item['hashtag6'] = post.css('div.attributed-text-segment-list__container.relative.mt-1.mb-1\.5.babybear\:mt-0.babybear\:mb-0\.5 p a:nth-child(6)::text').get().strip()
         if post.css('div.flex.items-center.font-sans.text-sm.my-1.main-feed-activity-card__social-actions a span::text').get() is not None:
             item['likes'] = post.css('div.flex.items-center.font-sans.text-sm.my-1.main-feed-activity-card__social-actions a span::text').get().strip()
+        if post.css('time.flex-none::text').get() is not None:
+            item['time'] = post.css('time.flex-none::text').get().strip()
         
         yield item
